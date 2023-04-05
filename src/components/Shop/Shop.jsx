@@ -16,18 +16,43 @@ const Shop = () => {
     },[])
 
     const handleAddToCart =(product)=>{
-        let newCart = [...cart,product]
+        // let newCart = [...cart,product]
+        let newCart = []
+        // if product doesn't exist the cart then set quantity= 1
+        // if exist update quantity by 1
+        const exists = cart.find(pd=> pd.id === product.id);
+        if(!exists){
+            product.quantity = 1;
+            newCart = [...cart,product]
+        }else{
+            exists.quantity = exists.quantity + 1;
+            const remaining = cart.filter(pd=> pd.id !== product.id);
+            newCart = [...remaining,exists]
+        }
         setCart(newCart)
         addToDb(product.id)
 
-        // console.log(product);
     }
 
     // get product form localStorage
     useEffect(()=>{
-        const storedCart = getShoppingCart()
-        console.log(storedCart);
-    },[])
+        const storedCart = getShoppingCart();
+        const savedCart = [];
+        // step 1 
+        for(const id in storedCart){
+            // step 2 find the product using id
+            const addedProducts = products.find(product=> product.id === id);
+            if(addedProducts){
+                // step 3 get product quantity
+                const quantity = storedCart[id]
+                addedProducts.quantity = quantity 
+                // step 4 added product to the saved cart
+                savedCart.push(addedProducts)
+            }
+        }
+        // step : 5 set product into setCart
+        setCart(savedCart)
+    },[products])
 
     return (
         <div className='shop-container'>
