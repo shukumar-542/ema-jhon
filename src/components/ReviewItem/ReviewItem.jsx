@@ -2,10 +2,11 @@ import React from 'react';
 import './ReviewItem.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom';
 
 const ReviewItem = ({cart,handelRemoveItem}) => {
     const {id,name,price,quantity,img} = cart
-    console.log(img);
+    // console.log(img);
     return (
         <div className='review-item'>
             <img src={img} alt="" />
@@ -18,6 +19,9 @@ const ReviewItem = ({cart,handelRemoveItem}) => {
             <button className='delete-btn' onClick={()=>handelRemoveItem(id)}>
             <FontAwesomeIcon className='delete-icon' icon={faTrashAlt} />
             </button>
+            <Link to='/orders'>
+                        <button>Checkout</button>
+                    </Link>
         </div>
     );
 };
